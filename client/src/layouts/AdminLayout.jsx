@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 
-const EmployeeLayout = () => {
+const AdminLayout = () => {
   return (
     <div className="flex">
-      <Sidebar role="Employee" />
+      <Sidebar role="ADMIN" />
 
       <div className="flex-1 p-6 bg-gray-100 min-h-screen">
         <Outlet />
@@ -13,4 +13,4 @@ const EmployeeLayout = () => {
   );
 };
 
-export default EmployeeLayout;
+export default AdminLayout;
