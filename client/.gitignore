@@ -1,4 +1,6 @@
+# =========================
 # Logs
+# =========================
 logs
 *.log
 npm-debug.log*
@@ -7,16 +9,56 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Build Files
+# =========================
+dist/
+dist-ssr/
+build/
+.vite/
+
+# =========================
+# Environment Files
+# =========================
+.env
+.env.*
 *.local
 
-# Editor directories and files
+# =========================
+# Prisma
+# =========================
+prisma/dev.db
+prisma/dev.db-journal
+
+# =========================
+# Uploads
+# =========================
+uploads/
+
+# =========================
+# Coverage
+# =========================
+coverage/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+
+.idea/
+
 *.suo
 *.ntvs*
 *.njsproj
