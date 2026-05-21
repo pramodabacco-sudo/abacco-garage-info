@@ -6,11 +6,6 @@ const ADMIN_LINKS = [
   { path: "/admin-dashboard", label: "Overview Dashboard" },
 
   {
-    path: "/admin-dashboard/employees",
-    label: "Employee Roster",
-  },
-
-  {
     path: "/admin-dashboard/add-employee",
     label: "Add Employee",
   },
@@ -22,15 +17,6 @@ const ADMIN_LINKS = [
   path: "/admin-dashboard/garage-visits",
   label: "Garage Visits",
 },
-  {
-    path: "/admin-dashboard/reports",
-    label: "Performance Reports",
-  },
-
-  {
-    path: "/admin-dashboard/settings",
-    label: "Console Settings",
-  },
 ];
 
 const AdminLayout = () => {

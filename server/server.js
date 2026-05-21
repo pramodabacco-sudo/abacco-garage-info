@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./src/routes/authRoutes.js";
+import dashboardRoutes from "./src/routes/dashboardRoutes.js";
+import employeeDashboardRoutes from "./src/routes/employeeDashboardRoutes.js";
 import garageRoutes from "./src/routes/garageRoutes.js";
 import attendanceRoutes from "./src/routes/attendanceRoutes.js";
 
@@ -29,6 +31,14 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use(
+  "/api/dashboard",
+  dashboardRoutes
+);
+app.use(
+  "/api/employee-dashboard",
+  employeeDashboardRoutes
+);
 app.use("/api/garage", garageRoutes);
 app.use( "/api/attendance", attendanceRoutes);
 
