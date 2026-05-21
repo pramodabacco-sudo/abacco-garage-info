@@ -184,7 +184,7 @@ const AddGarageVisit = () => {
               {/* LEAD STATUS */}
               <div>
                 <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
-                  Lead Status Metric
+                  Lead Status
                 </label>
                 <div className="relative">
                   <select
@@ -253,23 +253,56 @@ const AddGarageVisit = () => {
               </label>
               
               {/* Architectural Custom Styled File Picker Box Container */}
-              <div className="relative group border border-dashed border-neutral-300 hover:border-neutral-900 transition-colors p-8 text-center cursor-pointer">
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleImageChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                />
-                <div className="space-y-1">
-                  <span className="text-xs font-medium text-neutral-600 block group-hover:text-neutral-900 transition-colors">
-                    Click to browse files or trigger native mobile camera lens
-                  </span>
-                  <span className="text-[11px] text-neutral-400 block font-mono">
-                    JPEG, PNG up to multiple bay imagery frames
-                  </span>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                {/* Upload Media */}
+                <label className="cursor-pointer">
+                  <div className="border border-dashed border-neutral-300 hover:border-neutral-900 transition-colors p-8 text-center">
+
+                    <div className="space-y-1">
+                      <span className="text-sm font-semibold text-neutral-800 block">
+                        Upload Media
+                      </span>
+
+                      <span className="text-xs text-neutral-500 block">
+                        Gallery / Files
+                      </span>
+                    </div>
+
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </div>
+                </label>
+
+                {/* Use Camera */}
+                <label className="cursor-pointer">
+                  <div className="border border-dashed border-neutral-300 hover:border-neutral-900 transition-colors p-8 text-center">
+
+                    <div className="space-y-1">
+                      <span className="text-sm font-semibold text-neutral-800 block">
+                        Use Camera
+                      </span>
+
+                      <span className="text-xs text-neutral-500 block">
+                        Capture Photo
+                      </span>
+                    </div>
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </div>
+                </label>
+
               </div>
 
               {/* PREVIEW IMAGE MATRIX GRID MAP */}
