@@ -50,9 +50,10 @@ const Sidebar = ({ role, links = [] }) => {
 
       {/* SIDEBAR DRAWER */}
       <div className={`
-        fixed inset-y-0 left-0 w-72 bg-white text-[#1A1A1A] p-6 flex flex-col justify-between min-h-screen border-r border-[#D9D9D9] font-sans antialiased
+        fixed inset-y-0 left-0 w-72 bg-white text-[#1A1A1A] p-6 flex flex-col justify-between
+        border-r border-[#D9D9D9] font-sans antialiased overflow-y-auto
         transform transition-transform duration-300 ease-in-out z-[60]
-        lg:translate-x-0 lg:static lg:h-auto lg:w-64 lg:z-20 shrink-0
+        lg:translate-x-0 lg:static lg:h-screen lg:sticky lg:top-0 lg:w-64 lg:z-20 shrink-0
         ${isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"}
       `}>
 

@@ -62,7 +62,7 @@ const EmployeeLeads = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] text-[#1A1A1A] p-6 pt-20 sm:pt-10 sm:p-10 font-sans antialiased relative">
+    <div className="min-h-screen bg-[#F8F9FA] text-[#1A1A1A] p-6 pt- sm:pt-10 sm:p-10 font-sans antialiased relative">
       
       {/* Upper Ledger Context Header */}
       <div className="mb-10 pb-6 border-b border-neutral-200">
