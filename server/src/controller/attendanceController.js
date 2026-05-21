@@ -42,6 +42,9 @@ export const checkIn =
         message:
           "Checked in successfully",
 
+        attendanceId:
+          attendance.id,
+
         attendance,
       });
 
@@ -131,6 +134,12 @@ export const getAttendance =
                 name: true,
                 email: true,
                 role: true,
+              },
+            },
+
+            locations: {
+              orderBy: {
+                createdAt: "asc",
               },
             },
           },

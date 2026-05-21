@@ -19,6 +19,7 @@ model User {
 
   garageVisits GarageVisit[]
   attendance   EmployeeAttendance[]
+  locations    EmployeeLocation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -84,6 +85,8 @@ model EmployeeAttendance {
 
   checkOutTime DateTime?
 
+  locations EmployeeLocation[]
+
   status AttendanceStatus @default(CHECKED_OUT)
 
   createdAt DateTime @default(now())
@@ -92,4 +95,21 @@ model EmployeeAttendance {
 enum AttendanceStatus {
   CHECKED_IN
   CHECKED_OUT
+}
+
+model EmployeeLocation {
+  id String @id @default(cuid())
+
+  userId       String
+  attendanceId String
+
+  latitude  Float
+  longitude Float
+
+  address String?
+
+  createdAt DateTime @default(now())
+
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attendance EmployeeAttendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
 }

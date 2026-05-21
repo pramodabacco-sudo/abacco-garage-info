@@ -1,3 +1,4 @@
+//client\src\layouts\EmployeeLayout.jsx
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 

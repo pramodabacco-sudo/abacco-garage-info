@@ -6,6 +6,7 @@ import dashboardRoutes from "./src/routes/dashboardRoutes.js";
 import employeeDashboardRoutes from "./src/routes/employeeDashboardRoutes.js";
 import garageRoutes from "./src/routes/garageRoutes.js";
 import attendanceRoutes from "./src/routes/attendanceRoutes.js";
+import locationRoutes from "./src/routes/locationRoutes.js";
 
 dotenv.config();
 
@@ -41,6 +42,10 @@ app.use(
 );
 app.use("/api/garage", garageRoutes);
 app.use( "/api/attendance", attendanceRoutes);
+app.use(
+  "/api/location",
+  locationRoutes
+);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

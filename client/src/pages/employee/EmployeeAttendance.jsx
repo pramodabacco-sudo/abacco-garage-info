@@ -20,83 +20,162 @@ const EmployeeAttendance = () => {
   const [isCheckedIn, setIsCheckedIn] =
     useState(false);
 
-    const fetchStatus =
+  const [watchId, setWatchId] =
+    useState(null);
+
+  const fetchStatus =
     async () => {
-        try {
+      try {
 
         const response =
-            await API.get(
+          await API.get(
             "/api/attendance"
-            );
+          );
 
         const active =
-            response.data.find(
+          response.data.find(
             (item) =>
-                item.userId ===
+              item.userId ===
                 user.id &&
-                item.status ===
+              item.status ===
                 "CHECKED_IN"
-            );
+          );
 
         if (active) {
 
-            setIsCheckedIn(true);
+          setIsCheckedIn(true);
 
         } else {
 
-            setIsCheckedIn(false);
+          setIsCheckedIn(false);
         }
-
-        } catch (error) {
-
-        console.log(error);
-        }
-    };
-    useEffect(() => {
-    fetchStatus();
-    }, []);
-
-  const handleCheckIn =
-    async () => {
-      try {
-
-        setLoading(true);
-
-        await API.post(
-          "/api/attendance/check-in",
-          {
-            userId:
-              user.id,
-          }
-        );
-
-       await fetchStatus();
 
       } catch (error) {
 
-        alert(
-          error.response?.data
-            ?.message
-        );
-
-      } finally {
-
-        setLoading(false);
+        console.log(error);
       }
     };
 
-  const handleCheckOut =
+  useEffect(() => {
+    fetchStatus();
+  }, []);
+
+  const startTracking =
+    async (
+      attendanceId
+    ) => {
+
+      if (
+        !navigator.geolocation
+      ) {
+
+        alert(
+          "Geolocation not supported"
+        );
+
+        return;
+      }
+
+      const id =
+        navigator.geolocation.watchPosition(
+
+          async (
+            position
+          ) => {
+
+            try {
+
+              await API.post(
+                "/api/location/save",
+                {
+                  userId:
+                    user.id,
+
+                  attendanceId,
+
+                  latitude:
+                    position.coords.latitude,
+
+                  longitude:
+                    position.coords.longitude,
+                }
+              );
+
+              console.log(
+                "Location Saved"
+              );
+
+            } catch (error) {
+
+              console.log(error);
+            }
+          },
+
+          (error) => {
+
+            console.log(error);
+          },
+
+          {
+            enableHighAccuracy:
+              true,
+
+            maximumAge: 0,
+
+            timeout: 10000,
+          }
+        );
+
+      setWatchId(id);
+    };
+
+  const stopTracking =
+    () => {
+
+      if (watchId) {
+
+        navigator.geolocation.clearWatch(
+          watchId
+        );
+
+        setWatchId(null);
+
+        console.log(
+          "Tracking Stopped"
+        );
+      }
+    };
+
+  const handleCheckIn =
     async () => {
+
+      const confirmStart =
+        window.confirm(
+          "Are you sure you want to start working? Your live location tracking will begin."
+        );
+
+      if (!confirmStart)
+        return;
+
       try {
 
         setLoading(true);
 
-        await API.post(
-          "/api/attendance/check-out",
-          {
-            userId:
-              user.id,
-          }
+        const response =
+          await API.post(
+            "/api/attendance/check-in",
+            {
+              userId:
+                user.id,
+            }
+          );
+
+        const attendanceId =
+          response.data
+            .attendanceId;
+
+        await startTracking(
+          attendanceId
         );
 
         await fetchStatus();
@@ -113,6 +192,46 @@ const EmployeeAttendance = () => {
         setLoading(false);
       }
     };
+
+ const handleCheckOut =
+  async () => {
+
+    const confirmStop =
+      window.confirm(
+        "Are you sure you want to check out? Your live location tracking will stop."
+      );
+
+    if (!confirmStop)
+      return;
+
+    try {
+
+      setLoading(true);
+
+      await API.post(
+        "/api/attendance/check-out",
+        {
+          userId:
+            user.id,
+        }
+      );
+
+      stopTracking();
+
+      await fetchStatus();
+
+    } catch (error) {
+
+      alert(
+        error.response?.data
+          ?.message
+      );
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-6 md:p-10">
