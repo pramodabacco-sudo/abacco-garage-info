@@ -6,6 +6,17 @@ const EMPLOYEE_LINKS = [
     path: "/employee-dashboard",
     label: "Overview Dashboard",
   },
+      {
+      path:
+        "/employee-dashboard/attendance",
+
+      label:
+        "Attendance",
+    },
+  {
+    path: "/employee-dashboard/add-garage",
+    label: "Add Garage",
+  },
 
   {
     path: "/employee-dashboard/leads",
@@ -18,10 +29,6 @@ const EMPLOYEE_LINKS = [
   },
 
   // NEW
-  {
-    path: "/employee-dashboard/add-garage",
-    label: "Add Garage",
-  },
 ];
 
 const EmployeeLayout = () => {

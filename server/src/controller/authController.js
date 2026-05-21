@@ -63,6 +63,11 @@ export const loginUser = async (req, res) => {
         message: "User not found"
       });
     }
+    if (!user.isActive) {
+      return res.status(403).json({
+        message: "Account disabled by admin",
+      });
+    }
 
     const isPasswordMatch = await bcrypt.compare(
       password,
@@ -86,5 +91,87 @@ export const loginUser = async (req, res) => {
       message: error.message
     });
 
+  }
+};
+
+// GET EMPLOYEES
+export const getEmployees =
+  async (req, res) => {
+    try {
+
+      const employees =
+        await prisma.user.findMany({
+          orderBy: {
+            createdAt: "desc",
+          },
+
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            isActive: true,
+          },
+        });
+
+      res.status(200).json(
+        employees
+      );
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  };
+
+
+// TOGGLE USER STATUS
+export const toggleEmployeeStatus = async (
+  req,
+  res
+) => {
+  try {
+
+    const { id } = req.params;
+
+    const user =
+      await prisma.user.findUnique({
+        where: {
+          id,
+        },
+      });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const updatedUser =
+      await prisma.user.update({
+        where: {
+          id,
+        },
+
+        data: {
+          isActive:
+            !user.isActive,
+        },
+      });
+
+    res.status(200).json({
+      message:
+        "Status updated successfully",
+
+      user: updatedUser,
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

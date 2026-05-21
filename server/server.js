@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./src/routes/authRoutes.js";
 import garageRoutes from "./src/routes/garageRoutes.js";
+import attendanceRoutes from "./src/routes/attendanceRoutes.js";
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/garage", garageRoutes);
+app.use( "/api/attendance", attendanceRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

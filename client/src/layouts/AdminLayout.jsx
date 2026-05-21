@@ -3,10 +3,34 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 
 const ADMIN_LINKS = [
-  { path: "/admin-dashboard",           label: "Overview Dashboard" },
-  { path: "/admin-dashboard/employees", label: "Employee Roster" },
-  { path: "/admin-dashboard/reports",   label: "Performance Reports" },
-  { path: "/admin-dashboard/settings",  label: "Console Settings" },
+  { path: "/admin-dashboard", label: "Overview Dashboard" },
+
+  {
+    path: "/admin-dashboard/employees",
+    label: "Employee Roster",
+  },
+
+  {
+    path: "/admin-dashboard/add-employee",
+    label: "Add Employee",
+  },
+  {
+    path: "/admin-dashboard/attendance",
+    label: "Attendance",
+  },
+  {
+  path: "/admin-dashboard/garage-visits",
+  label: "Garage Visits",
+},
+  {
+    path: "/admin-dashboard/reports",
+    label: "Performance Reports",
+  },
+
+  {
+    path: "/admin-dashboard/settings",
+    label: "Console Settings",
+  },
 ];
 
 const AdminLayout = () => {
