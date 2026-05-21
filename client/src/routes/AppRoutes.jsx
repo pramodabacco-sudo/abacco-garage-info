@@ -13,7 +13,7 @@ import AdminSettings from "../pages/admin/AdminSettings";
 import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
 import EmployeeLeads from "../pages/employee/EmployeeLeads";
 import EmployeeVisits from "../pages/employee/EmployeeVisits";
-
+import AddGarageVisit from "../pages/employee/AddGarageVisit";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const AppRoutes = () => {
@@ -48,6 +48,10 @@ const AppRoutes = () => {
         <Route index element={<EmployeeDashboard />} />
         <Route path="leads" element={<EmployeeLeads />} />
         <Route path="visits" element={<EmployeeVisits />} />
+        <Route
+  path="add-garage"
+  element={<AddGarageVisit />}
+/>
       </Route>
     </Routes>
   );

@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./src/routes/authRoutes.js";
+import garageRoutes from "./src/routes/garageRoutes.js";
 
 dotenv.config();
 
@@ -12,7 +13,10 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://cqw6v494-5173.inc1.devtunnels.ms",
+    ],
     credentials: true,
   })
 );
@@ -24,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/garage", garageRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

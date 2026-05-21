@@ -1,0 +1,215 @@
+import prisma from "../config/prisma.js";
+import { uploadToCloudflare } from "../utils/cloudflare.js";
+
+
+// CREATE GARAGE VISIT
+export const createGarageVisit = async (req, res) => {
+  try {
+    const {
+      shopName,
+      address,
+      location,
+      phoneNumber,
+      leadStatus,
+      notes,
+      employeeId,
+    } = req.body;
+
+    if (
+      !shopName ||
+      !address ||
+      !phoneNumber ||
+      !employeeId
+    ) {
+      return res.status(400).json({
+        message: "Required fields missing",
+      });
+    }
+
+    const garageVisit =
+    await prisma.garageVisit.create({
+        data: {
+        shopName,
+        address,
+        location,
+        phoneNumber,
+
+        leadStatus:
+            leadStatus || "PENDING",
+
+        notes,
+        employeeId,
+        },
+    });
+
+    // MULTIPLE IMAGE UPLOAD
+    if (req.files && req.files.length > 0) {
+      const uploadedImages = [];
+
+      for (const file of req.files) {
+        const uploaded =
+          await uploadToCloudflare(
+            file,
+            garageVisit.id
+            )
+
+        uploadedImages.push({
+          imageUrl: uploaded.imageUrl,
+          publicId: uploaded.publicId,
+          garageVisitId: garageVisit.id,
+        });
+      }
+
+      await prisma.garageImage.createMany({
+        data: uploadedImages,
+      });
+    }
+
+    const finalData =
+      await prisma.garageVisit.findUnique({
+        where: {
+          id: garageVisit.id,
+        },
+
+        include: {
+          images: true,
+          employee: true,
+        },
+      });
+
+    res.status(201).json({
+      message: "Garage visit created",
+      data: finalData,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
+
+// GET ALL GARAGE VISITS
+export const getGarageVisits = async (
+  req,
+  res
+) => {
+  try {
+    const visits =
+      await prisma.garageVisit.findMany({
+        include: {
+          images: true,
+          employee: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+    res.status(200).json(visits);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+
+
+// GET SINGLE GARAGE VISIT
+export const getSingleGarageVisit = async (
+  req,
+  res
+) => {
+  try {
+    const { id } = req.params;
+
+    const visit =
+      await prisma.garageVisit.findUnique({
+        where: {
+          id,
+        },
+
+        include: {
+          images: true,
+          employee: true,
+        },
+      });
+
+    if (!visit) {
+      return res.status(404).json({
+        message: "Visit not found",
+      });
+    }
+
+    res.status(200).json(visit);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// UPDATE GARAGE VISIT
+export const updateGarageVisit =
+  async (req, res) => {
+    try {
+
+      const { id } = req.params;
+
+      const {
+        shopName,
+        address,
+        location,
+        phoneNumber,
+        leadStatus,
+        notes,
+      } = req.body;
+
+      const updatedVisit =
+        await prisma.garageVisit.update({
+          where: {
+            id,
+          },
+
+          data: {
+            shopName,
+            address,
+            location,
+            phoneNumber,
+            leadStatus,
+            notes,
+          },
+
+          include: {
+            images: true,
+            employee: true,
+          },
+        });
+
+      res.status(200).json({
+        message:
+          "Garage updated successfully",
+
+        data: updatedVisit,
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  };

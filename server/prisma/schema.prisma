@@ -16,11 +16,57 @@ model User {
 
   role Role @default(EMPLOYEE)
 
+  garageVisits GarageVisit[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model GarageVisit {
+  id String @id @default(cuid())
+
+  shopName String
+  address  String
+
+  location String?
+
+  phoneNumber String
+
+  leadStatus LeadStatus @default(PENDING)
+
+  notes String?
+
+  employeeId String
+  employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  images GarageImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GarageImage {
+  id String @id @default(cuid())
+
+  imageUrl String
+
+  publicId String?
+
+  garageVisitId String
+  garageVisit   GarageVisit @relation(fields: [garageVisitId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }
 
 enum Role {
   ADMIN
   EMPLOYEE
+}
+
+enum LeadStatus {
+  PENDING
+  INTERESTED
+  FOLLOW_UP
+  CONVERTED
+  REJECTED
 }
