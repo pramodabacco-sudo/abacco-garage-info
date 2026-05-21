@@ -1,12 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 
+const EMPLOYEE_LINKS = [
+  { path: "/employee-dashboard",        label: "Overview Dashboard" },
+  { path: "/employee-dashboard/leads",  label: "Active Leads" },
+  { path: "/employee-dashboard/visits", label: "Garage Visits" },
+];
+
 const EmployeeLayout = () => {
   return (
-    <div className="flex">
-      <Sidebar role="EMPLOYEE" />
-
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+    <div className="lg:flex min-h-screen">
+      {/* ↑ flex only on lg+, block on mobile */}
+      <Sidebar role="EMPLOYEE" links={EMPLOYEE_LINKS} />
+      <div className="flex-1 bg-[#F8F9FA] min-h-screen overflow-y-auto min-w-0">
         <Outlet />
       </div>
     </div>

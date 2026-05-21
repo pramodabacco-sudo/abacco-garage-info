@@ -1,12 +1,19 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/common/Sidebar";
 
+const ADMIN_LINKS = [
+  { path: "/admin-dashboard",           label: "Overview Dashboard" },
+  { path: "/admin-dashboard/employees", label: "Employee Roster" },
+  { path: "/admin-dashboard/reports",   label: "Performance Reports" },
+  { path: "/admin-dashboard/settings",  label: "Console Settings" },
+];
+
 const AdminLayout = () => {
   return (
-    <div className="flex">
-      <Sidebar role="ADMIN" />
-
-      <div className="flex-1 p-6 bg-gray-100 min-h-screen">
+    <div className="lg:flex min-h-screen">
+      {/* ↑ flex only on lg+, block on mobile */}
+      <Sidebar role="ADMIN" links={ADMIN_LINKS} />
+      <div className="flex-1 bg-[#F8F9FA] min-h-screen overflow-y-auto min-w-0">
         <Outlet />
       </div>
     </div>
