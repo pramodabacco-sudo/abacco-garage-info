@@ -44,8 +44,7 @@ export const getDashboardStats =
       const convertedLeads =
         await prisma.garageVisit.count({
           where: {
-            leadStatus:
-              "CONVERTED",
+  leadStatus: "DEAL"
           },
         });
 
@@ -83,10 +82,12 @@ export const getDashboardStats =
         recentGarages,
       });
 
-    } catch (error) {
+} catch (error) {
 
-      res.status(500).json({
-        message: error.message,
-      });
-    }
+  console.log(error);
+
+  res.status(500).json({
+    message: error.message,
+  });
+}
   };

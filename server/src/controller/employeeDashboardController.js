@@ -43,8 +43,7 @@ export const getEmployeeDashboard =
             employeeId:
               userId,
 
-            leadStatus:
-              "CONVERTED",
+           leadStatus: "DEAL",
           },
         });
 
@@ -93,10 +92,12 @@ export const getEmployeeDashboard =
           !!activeAttendance,
       });
 
-    } catch (error) {
+} catch (error) {
 
-      res.status(500).json({
-        message: error.message,
-      });
-    }
+  console.log(error);
+
+  res.status(500).json({
+    message: error.message,
+  });
+}
   };

@@ -47,6 +47,7 @@ const EmployeeDashboard = () => {
     fetchDashboard();
   }, []);
 
+
   if (loading) {
     return (
       <div className="p-10">
@@ -54,6 +55,13 @@ const EmployeeDashboard = () => {
       </div>
     );
   }
+    if (!data) {
+  return (
+    <div className="p-10 text-red-500">
+      Failed to load dashboard
+    </div>
+  );
+}
 
   return (
     <div className="p-4 sm:p-6 md:p-10 bg-[#F8F9FA] min-h-screen">
@@ -75,12 +83,12 @@ const EmployeeDashboard = () => {
 
           <span
             className={`text-xs px-3 py-1 rounded-full w-fit ${
-              data.isWorking
+              data?.isWorking
                 ? "bg-green-100 text-green-700"
                 : "bg-neutral-200 text-neutral-700"
             }`}
           >
-            {data.isWorking
+            {data?.isWorking
               ? "WORKING"
               : "OFFLINE"}
           </span>
@@ -101,7 +109,7 @@ const EmployeeDashboard = () => {
           </p>
 
           <h2 className="text-4xl font-light">
-            {data.totalVisits}
+            {data.totalVisits || 0}
           </h2>
 
         </div>
@@ -113,7 +121,7 @@ const EmployeeDashboard = () => {
           </p>
 
           <h2 className="text-4xl font-light text-green-600">
-            {data.interestedLeads}
+            {data.interestedLeads || 0}
           </h2>
 
         </div>
@@ -125,7 +133,7 @@ const EmployeeDashboard = () => {
           </p>
 
           <h2 className="text-4xl font-light text-yellow-600">
-            {data.followUps}
+            {data.followUps || 0}
           </h2>
 
         </div>
@@ -137,7 +145,7 @@ const EmployeeDashboard = () => {
           </p>
 
           <h2 className="text-4xl font-light text-blue-600">
-            {data.convertedLeads}
+            {data.convertedLeads || 0}
           </h2>
 
         </div>
@@ -184,9 +192,7 @@ const EmployeeDashboard = () => {
             </thead>
 
             <tbody>
-
-              {data.recentVisits.map(
-                (visit) => (
+{data?.recentVisits?.map((visit) => (
 
                 <tr
                   key={visit.id}
