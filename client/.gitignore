@@ -64,3 +64,32 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+
+# =========================
+# Capacitor / Android
+# =========================
+android/.gradle/
+android/local.properties
+android/captures/
+android/.idea/
+android/app/build/
+android/build/
+
+# Keystore Files
+*.jks
+*.keystore
+
+# Capacitor Generated\
+android/app/src/main/assets/capacitor.config.json
+
+# Mac
+.AppleDouble
+.LSOverride
+
+# Windows
+ehthumbs.db
+Desktop.ini
+
+# Temporary
+tmp/
+temp/

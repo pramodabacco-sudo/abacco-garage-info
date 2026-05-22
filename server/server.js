@@ -17,10 +17,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://cqw6v494-5173.inc1.devtunnels.ms",
-    ],
+    origin: true,
     credentials: true,
   })
 );
