@@ -374,6 +374,7 @@ const openPopup = (
                 </p>
               )}
 
+
                     {visit.followUpDate && (
                       <p className="text-neutral-600">
                         <span className="font-medium">
