@@ -15,39 +15,30 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  process.env.CLIENT_MOBILE_URL,
-  process.env.CLIENT_ANDROID_URL,
-  "http://localhost",
-  "http://localhost:5173",
-  "capacitor://localhost",
-];
+const allowedOrigins =
+  process.env.CLIENT_ORIGIN
+    .split(",")
+    .map((origin) =>
+      origin.trim()
+    );
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: function (
+      origin,
+      callback
+    ) {
 
       // mobile apps / postman
       if (!origin) {
         return callback(null, true);
       }
 
-      const normalizedOrigin =
-        origin.replace(/\/$/, "");
-
-      const isAllowed =
-        allowedOrigins.some(
-          (allowedOrigin) =>
-            allowedOrigin &&
-            normalizedOrigin ===
-              allowedOrigin.replace(
-                /\/$/,
-                ""
-              )
-        );
-
-      if (isAllowed) {
+      if (
+        allowedOrigins.includes(
+          origin
+        )
+      ) {
         return callback(null, true);
       }
 
@@ -58,7 +49,8 @@ app.use(
 
       return callback(
         new Error(
-          `CORS blocked for origin: ${origin}`
+          "CORS not allowed: " +
+            origin
         )
       );
     },
