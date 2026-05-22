@@ -13,6 +13,22 @@ export const saveLocation =
         address,
       } = req.body;
 
+      // check attendance exists
+      const attendance =
+        await prisma.employeeAttendance.findUnique({
+          where: {
+            id: attendanceId,
+          },
+        });
+
+      if (!attendance) {
+
+        return res.status(400).json({
+          message:
+            "Invalid attendance session",
+        });
+      }
+
       const location =
         await prisma.employeeLocation.create({
           data: {
