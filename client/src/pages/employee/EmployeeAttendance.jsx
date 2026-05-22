@@ -76,56 +76,121 @@ const EmployeeAttendance = () => {
         return;
       }
 
-      const id =
-        navigator.geolocation.watchPosition(
+      // const id =
+      //   navigator.geolocation.watchPosition(
 
-          async (
-            position
-          ) => {
+      //     async (
+      //       position
+      //     ) => {
 
-            try {
+      //       try {
 
-              await API.post(
-                "/api/location/save",
-                {
-                  userId:
-                    user.id,
+      //         await API.post(
+      //           "/api/location/save",
+      //           {
+      //             userId:
+      //               user.id,
 
-                  attendanceId,
+      //             attendanceId,
 
-                  latitude:
-                    position.coords.latitude,
+      //             latitude:
+      //               position.coords.latitude,
 
-                  longitude:
-                    position.coords.longitude,
-                }
-              );
+      //             longitude:
+      //               position.coords.longitude,
+      //           }
+      //         );
 
-              console.log(
-                "Location Saved"
-              );
+      //         console.log(
+      //           "Location Saved"
+      //         );
 
-            } catch (error) {
+      //       } catch (error) {
 
-              console.log(error);
-            }
-          },
+      //         console.log(error);
+      //       }
+      //     },
 
-          (error) => {
+      //     (error) => {
+
+      //       console.log(error);
+      //     },
+
+      //     {
+      //       enableHighAccuracy:
+      //         true,
+
+      //       maximumAge: 0,
+
+      //       timeout: 10000,
+      //     }
+      //   );
+    let lastSavedTime = 0;
+
+    const id =
+      navigator.geolocation.watchPosition(
+
+        async (
+          position
+        ) => {
+
+          const now =
+            Date.now();
+
+          // save only every 1 minute
+          if (
+            now -
+              lastSavedTime <
+            60000
+          ) {
+            return;
+          }
+
+          lastSavedTime =
+            now;
+
+          try {
+
+            await API.post(
+              "/api/location/save",
+              {
+                userId:
+                  user.id,
+
+                attendanceId,
+
+                latitude:
+                  position.coords.latitude,
+
+                longitude:
+                  position.coords.longitude,
+              }
+            );
+
+            console.log(
+              "Location Saved"
+            );
+
+          } catch (error) {
 
             console.log(error);
-          },
-
-          {
-            enableHighAccuracy:
-              true,
-
-            maximumAge: 0,
-
-            timeout: 10000,
           }
-        );
+        },
 
+        (error) => {
+
+          console.log(error);
+        },
+
+        {
+          enableHighAccuracy:
+            true,
+
+          maximumAge: 30000,
+
+          timeout: 10000,
+        }
+      );
       setWatchId(id);
     };
 
