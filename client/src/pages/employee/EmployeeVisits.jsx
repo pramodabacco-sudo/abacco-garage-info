@@ -4,7 +4,7 @@ import API from "../../api/axios";
 import ImagePopup from "../../components/ImagePopup";
 
 const STATUS_STYLES = {
-  PENDING: {
+  FIRST_VISIT: {
     dot: "bg-yellow-400",
     text: "text-yellow-600",
   },
@@ -19,12 +19,12 @@ const STATUS_STYLES = {
     text: "text-orange-600",
   },
 
-  CONVERTED: {
+  DEAL: {
     dot: "bg-green-500",
     text: "text-green-600",
   },
 
-  REJECTED: {
+  NOT_INTERESTED: {
     dot: "bg-red-400",
     text: "text-red-600",
   },
@@ -65,7 +65,8 @@ const [updatingId, setUpdatingId] =
   };
   const updateStatus = async (
   id,
-  leadStatus
+  leadStatus,
+  followUpDate = null
 ) => {
   try {
 
@@ -75,6 +76,7 @@ const [updatingId, setUpdatingId] =
       `/api/garage/${id}`,
       {
         leadStatus,
+        followUpDate,
       }
     );
 
@@ -84,6 +86,7 @@ const [updatingId, setUpdatingId] =
           ? {
               ...visit,
               leadStatus,
+              followUpDate,
             }
           : visit
       )
@@ -148,15 +151,14 @@ const openPopup = (
 
           <div className="text-right">
             <p className="text-[9px] uppercase tracking-widest text-neutral-400">
-              Converted
+              Deals Closed
             </p>
 
             <p className="text-2xl font-light text-neutral-900">
               {
                 visits.filter(
                   (v) =>
-                    v.leadStatus ===
-                    "CONVERTED"
+                    v.leadStatus === "DEAL"
                 ).length
               }
             </p>
@@ -250,45 +252,99 @@ const openPopup = (
                 <span
                   className={`text-xs font-medium uppercase tracking-wider ${style.text}`}
                 >
-                  {visit.leadStatus}
+                  {visit.leadStatus === "FIRST_VISIT"
+                      ? "First Visit"
+                      : visit.leadStatus === "INTERESTED"
+                      ? "Interested"
+                      : visit.leadStatus === "FOLLOW_UP"
+                      ? "Follow Up"
+                      : visit.leadStatus === "DEAL"
+                      ? "Deal Closed"
+                      : "Not Interested"}
                 </span>
 
               </div>
 
-              <select
-                value={visit.leadStatus}
-                disabled={
-                  updatingId === visit.id
-                }
-                onChange={(e) =>
-                  updateStatus(
-                    visit.id,
-                    e.target.value
+          <select
+            value={visit.leadStatus}
+            disabled={
+              updatingId === visit.id
+            }
+            onChange={(e) => {
+
+              const value = e.target.value;
+
+              if (value !== "FOLLOW_UP") {
+                updateStatus(
+                  visit.id,
+                  value
+                );
+              } else {
+
+                setVisits((prev) =>
+                  prev.map((v) =>
+                    v.id === visit.id
+                      ? {
+                          ...v,
+                          leadStatus:
+                            "FOLLOW_UP",
+                        }
+                      : v
                   )
-                }
-                className="border border-neutral-300 px-2 py-1 text-xs outline-none"
-              >
-                <option value="PENDING">
-                  PENDING
-                </option>
+                );
+              }
+            }}
+            className="border border-neutral-300 px-2 py-1 text-xs outline-none"
+          >
+            <option value="FIRST_VISIT">
+              First Visit
+            </option>
 
-                <option value="INTERESTED">
-                  INTERESTED
-                </option>
+            <option value="INTERESTED">
+              Interested
+            </option>
 
-                <option value="FOLLOW_UP">
-                  FOLLOW UP
-                </option>
+            <option value="FOLLOW_UP">
+              Follow Up
+            </option>
 
-                <option value="CONVERTED">
-                  CONVERTED
-                </option>
+            <option value="DEAL">
+              Deal Closed
+            </option>
 
-                <option value="REJECTED">
-                  REJECTED
-                </option>
+            <option value="NOT_INTERESTED">
+              Not Interested
+            </option>
+          </select>
+          {
+            visit.leadStatus ===
+              "FOLLOW_UP" && (
+              <div className="mt-2">
 
-              </select>
+                <input
+                  type="date"
+                  value={
+                    visit.followUpDate
+                      ? new Date(
+                          visit.followUpDate
+                        )
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    updateStatus(
+                      visit.id,
+                      "FOLLOW_UP",
+                      e.target.value
+                    )
+                  }
+                  className="border border-neutral-300 px-2 py-1 text-xs outline-none w-full"
+                />
+
+              </div>
+            )
+          }
 
             </div>
 
@@ -309,15 +365,27 @@ const openPopup = (
                     </span>{" "}
                     {visit.phoneNumber}
                   </p>
-
                   {visit.location && (
-                    <p className="text-neutral-600">
-                      <span className="font-medium">
-                        Location:
-                      </span>{" "}
-                      {visit.location}
-                    </p>
-                  )}
+                <p className="text-neutral-600">
+                  <span className="font-medium">
+                    Location:
+                  </span>{" "}
+                  {visit.location}
+                </p>
+              )}
+
+                    {visit.followUpDate && (
+                      <p className="text-neutral-600">
+                        <span className="font-medium">
+                          Next Contact:
+                        </span>{" "}
+                        {
+                          new Date(
+                            visit.followUpDate
+                          ).toLocaleDateString()
+                        }
+                      </p>
+                    )}
 
                   {visit.employee && (
                     <p className="text-neutral-600">

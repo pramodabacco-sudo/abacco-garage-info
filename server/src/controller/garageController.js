@@ -11,6 +11,7 @@ export const createGarageVisit = async (req, res) => {
       location,
       phoneNumber,
       leadStatus,
+      followUpDate,
       notes,
       employeeId,
     } = req.body;
@@ -34,8 +35,13 @@ export const createGarageVisit = async (req, res) => {
         location,
         phoneNumber,
 
-        leadStatus:
-            leadStatus || "PENDING",
+    leadStatus:
+      leadStatus || "FIRST_VISIT",
+
+    followUpDate:
+      followUpDate
+        ? new Date(followUpDate)
+        : null,
 
         notes,
         employeeId,
@@ -173,6 +179,7 @@ export const updateGarageVisit =
         location,
         phoneNumber,
         leadStatus,
+        followUpDate,
         notes,
       } = req.body;
 
@@ -182,14 +189,21 @@ export const updateGarageVisit =
             id,
           },
 
-          data: {
-            shopName,
-            address,
-            location,
-            phoneNumber,
-            leadStatus,
-            notes,
-          },
+        data: {
+          shopName,
+          address,
+          location,
+          phoneNumber,
+
+          leadStatus,
+
+          followUpDate:
+            followUpDate
+              ? new Date(followUpDate)
+              : null,
+
+          notes,
+        },
 
           include: {
             images: true,

@@ -4,14 +4,15 @@ import API from "../../api/axios";
 const AddGarageVisit = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const [formData, setFormData] = useState({
-    shopName: "",
-    address: "",
-    location: "",
-    phoneNumber: "",
-    leadStatus: "PENDING",
-    notes: "",
-  });
+const [formData, setFormData] = useState({
+  shopName: "",
+  address: "",
+  location: "",
+  phoneNumber: "",
+  leadStatus: "FIRST_VISIT",
+  followUpDate: "",
+  notes: "",
+});
 
   const [images, setImages] = useState([]);
   const [previewImages, setPreviewImages] = useState([]);
@@ -50,6 +51,12 @@ const AddGarageVisit = () => {
       submitData.append("location", formData.location);
       submitData.append("phoneNumber", formData.phoneNumber);
       submitData.append("leadStatus", formData.leadStatus);
+
+      submitData.append(
+        "followUpDate",
+        formData.followUpDate
+      );
+
       submitData.append("notes", formData.notes);
       submitData.append("employeeId", user?.id || "");
 
@@ -67,14 +74,15 @@ const AddGarageVisit = () => {
       setSuccessMsg(response.data.message || "Garage visit entry logged successfully.");
 
       // Reset
-      setFormData({
-        shopName: "",
-        address: "",
-        location: "",
-        phoneNumber: "",
-        leadStatus: "PENDING",
-        notes: "",
-      });
+    setFormData({
+      shopName: "",
+      address: "",
+      location: "",
+      phoneNumber: "",
+      leadStatus: "FIRST_VISIT",
+      followUpDate: "",
+      notes: "",
+    });
       setImages([]);
       setPreviewImages([]);
     } catch (error) {
@@ -99,7 +107,7 @@ const AddGarageVisit = () => {
             — DISPATCH INTAKE —
           </span>
           <h1 className="text-3xl font-normal tracking-tight text-neutral-900 font-serif">
-            Log New Garage Visit
+            Add Garage Visit
           </h1>
           <p className="text-neutral-500 text-xs mt-1">
             Submit on-site presentation notes, business parameters, and diagnostic images directly to the ledger database network.
@@ -184,7 +192,7 @@ const AddGarageVisit = () => {
               {/* LEAD STATUS */}
               <div>
                 <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
-                  Lead Status
+                  Visit Status
                 </label>
                 <div className="relative">
                   <select
@@ -193,12 +201,44 @@ const AddGarageVisit = () => {
                     onChange={handleChange}
                     className="w-full bg-transparent border-b border-neutral-200 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900 rounded-none cursor-pointer appearance-none text-neutral-800 font-medium"
                   >
-                    <option value="PENDING">PENDING (EVALUATING IN PROGRESS)</option>
-                    <option value="INTERESTED">INTERESTED (WANTS DEMO RUNS)</option>
-                    <option value="FOLLOW_UP">FOLLOW UP (REVISIT NEXT MONTH)</option>
-                    <option value="CONVERTED">CONVERTED (WILL ONBOARD IN BAY)</option>
-                    <option value="REJECTED">REJECTED (NO SYSTEM INTEREST)</option>
+                    <option value="FIRST_VISIT">
+                      First Visit
+                    </option>
+
+                    <option value="INTERESTED">
+                      Interested
+                    </option>
+
+                    <option value="FOLLOW_UP">
+                      Follow Up
+                    </option>
+
+                    <option value="DEAL">
+                      Deal Closed
+                    </option>
+
+                    <option value="NOT_INTERESTED">
+                      Not Interested
+                    </option>
                   </select>
+                  {
+                    formData.leadStatus === "FOLLOW_UP" && (
+                      <div className="mt-6">
+                        <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
+                          Next Contact Date
+                        </label>
+
+                        <input
+                          type="date"
+                          name="followUpDate"
+                          value={formData.followUpDate}
+                          onChange={handleChange}
+                          className="w-full bg-transparent border-b border-neutral-200 py-2.5 text-sm outline-none transition-colors focus:border-neutral-900"
+                          required
+                        />
+                      </div>
+                    )
+                  }
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-neutral-400">
                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                   </div>
@@ -215,7 +255,7 @@ const AddGarageVisit = () => {
             {/* ADDRESS */}
             <div>
               <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
-                Physical Street Address
+                Garage Address
               </label>
               <textarea
                 name="address"
@@ -231,7 +271,7 @@ const AddGarageVisit = () => {
             {/* NOTES */}
             <div>
               <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
-                Presentation Feedback & Consultation Notes
+                Garage Notes
               </label>
               <textarea
                 name="notes"

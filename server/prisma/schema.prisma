@@ -35,7 +35,9 @@ model GarageVisit {
 
   phoneNumber String
 
-  leadStatus LeadStatus @default(PENDING)
+  leadStatus LeadStatus @default(FIRST_VISIT)
+
+  followUpDate DateTime?
 
   notes String?
 
@@ -67,11 +69,11 @@ enum Role {
 }
 
 enum LeadStatus {
-  PENDING
+  FIRST_VISIT
   INTERESTED
   FOLLOW_UP
-  CONVERTED
-  REJECTED
+  DEAL
+  NOT_INTERESTED
 }
 
 model EmployeeAttendance {
