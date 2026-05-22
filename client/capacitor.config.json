@@ -1,5 +1,9 @@
 {
   "appId": "com.abbacco.garageinfo",
   "appName": "Abacco Garage Info",
-  "webDir": "dist"
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  }
 }
