@@ -15,9 +15,36 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  process.env.CLIENT_MOBILE_URL,
+  process.env.CLIENT_ANDROID_URL,
+  process.env.CLIENT_PRODUCTION_URL,
+];
+
 app.use(
   cors({
-    origin: true,
+    origin: (origin, callback) => {
+
+      // allow requests without origin
+      // mobile apps / postman
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (
+        allowedOrigins.includes(origin)
+      ) {
+        callback(null, true);
+      } else {
+        callback(
+          new Error(
+            "Not allowed by CORS"
+          )
+        );
+      }
+    },
+
     credentials: true,
   })
 );
