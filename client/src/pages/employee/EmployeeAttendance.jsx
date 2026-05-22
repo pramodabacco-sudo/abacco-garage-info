@@ -104,22 +104,57 @@ const EmployeeAttendance = () => {
             now;
 
           try {
+let address =
+  "Unknown Location";
 
-            await API.post(
-              "/api/location/save",
-              {
-                userId:
-                  user.id,
+try {
 
-                attendanceId,
+const geoResponse =
+  await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`,
+    {
+      headers: {
+        "Accept":
+          "application/json",
+      },
+    }
+  );
+  const geoData =
+    await geoResponse.json();
 
-                latitude:
-                  position.coords.latitude,
+  if (
+    geoData?.display_name
+  ) {
 
-                longitude:
-                  position.coords.longitude,
-              }
-            );
+    address =
+      geoData.display_name;
+  }
+
+} catch (error) {
+
+  console.log(
+    "Address Fetch Error",
+    error
+  );
+}
+
+await API.post(
+  "/api/location/save",
+  {
+    userId:
+      user.id,
+
+    attendanceId,
+
+    latitude:
+      position.coords.latitude,
+
+    longitude:
+      position.coords.longitude,
+
+    address,
+  }
+);
 
             console.log(
               "Location Saved"

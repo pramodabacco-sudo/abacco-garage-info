@@ -238,27 +238,21 @@ const AdminAttendance = () => {
 </td>
                     <td className="px-5 py-4 text-sm max-w-[300px]">
 
-                    {location?.address ? (
+                  <div className="flex items-center gap-2">
 
-                      <div className="space-y-1">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
 
-                        <p className="font-medium text-neutral-800">
-                          Current Location
-                        </p>
+                    <span className="text-sm text-neutral-700">
 
-                        <p className="text-neutral-500 break-words">
-                          {location.address}
-                        </p>
+                      {location?.address &&
+                      location.address !==
+                        "Unknown Location"
+                        ? location.address
+                        : "Live Location Available"}
 
-                      </div>
+                    </span>
 
-                    ) : (
-
-                      <span className="text-neutral-400">
-                        No Address
-                      </span>
-
-                    )}
+                  </div>
 
                   </td>
                   <td className="px-5 py-4">
@@ -392,9 +386,17 @@ const AdminAttendance = () => {
                         }
                       </p>
 
-                      <p className="text-xs">
-                        {loc.address}
-                      </p>
+            <p className="text-xs">
+
+              {loc.address &&
+              loc.address !==
+                "Unknown Location"
+
+                ? loc.address
+
+                : `Lat: ${loc.latitude.toFixed(5)}, Lng: ${loc.longitude.toFixed(5)}`}
+
+            </p>
 
                       <p className="text-xs text-neutral-500">
                         {new Date(
