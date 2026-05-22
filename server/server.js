@@ -19,7 +19,6 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
   process.env.CLIENT_MOBILE_URL,
   process.env.CLIENT_ANDROID_URL,
-  process.env.CLIENT_PRODUCTION_URL,
 ];
 
 app.use(
