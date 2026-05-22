@@ -262,6 +262,7 @@ const [formData, setFormData] = useState({
                 value={formData.address}
                 onChange={handleChange}
                 rows="2"
+                
                 required
                 placeholder="Enter shop street coordinates..."
                 className="w-full bg-transparent border-b border-neutral-200 py-2 text-sm outline-none transition-colors focus:border-neutral-900 placeholder-neutral-300 resize-none"
