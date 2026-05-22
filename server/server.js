@@ -19,29 +19,48 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
   process.env.CLIENT_MOBILE_URL,
   process.env.CLIENT_ANDROID_URL,
+  "http://localhost",
+  "http://localhost:5173",
+  "capacitor://localhost",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
 
-      // allow requests without origin
       // mobile apps / postman
       if (!origin) {
         return callback(null, true);
       }
 
-      if (
-        allowedOrigins.includes(origin)
-      ) {
-        callback(null, true);
-      } else {
-        callback(
-          new Error(
-            "Not allowed by CORS"
-          )
+      const normalizedOrigin =
+        origin.replace(/\/$/, "");
+
+      const isAllowed =
+        allowedOrigins.some(
+          (allowedOrigin) =>
+            allowedOrigin &&
+            normalizedOrigin ===
+              allowedOrigin.replace(
+                /\/$/,
+                ""
+              )
         );
+
+      if (isAllowed) {
+        return callback(null, true);
       }
+
+      console.log(
+        "Blocked Origin:",
+        origin
+      );
+
+      return callback(
+        new Error(
+          `CORS blocked for origin: ${origin}`
+        )
+      );
     },
 
     credentials: true,
