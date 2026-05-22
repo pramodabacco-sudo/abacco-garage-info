@@ -16,11 +16,17 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins =
-  process.env.CLIENT_ORIGIN
+  (process.env.CLIENT_ORIGIN || "")
     .split(",")
     .map((origin) =>
       origin.trim()
-    );
+    )
+    .filter(Boolean);
+
+console.log(
+  "Allowed Origins:",
+  allowedOrigins
+);
 
 app.use(
   cors({
