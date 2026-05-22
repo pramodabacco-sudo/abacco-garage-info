@@ -76,58 +76,11 @@ const EmployeeAttendance = () => {
         return;
       }
 
-      // const id =
-      //   navigator.geolocation.watchPosition(
 
-      //     async (
-      //       position
-      //     ) => {
 
-      //       try {
 
-      //         await API.post(
-      //           "/api/location/save",
-      //           {
-      //             userId:
-      //               user.id,
-
-      //             attendanceId,
-
-      //             latitude:
-      //               position.coords.latitude,
-
-      //             longitude:
-      //               position.coords.longitude,
-      //           }
-      //         );
-
-      //         console.log(
-      //           "Location Saved"
-      //         );
-
-      //       } catch (error) {
-
-      //         console.log(error);
-      //       }
-      //     },
-
-      //     (error) => {
-
-      //       console.log(error);
-      //     },
-
-      //     {
-      //       enableHighAccuracy:
-      //         true,
-
-      //       maximumAge: 0,
-
-      //       timeout: 10000,
-      //     }
-      //   );
-    let lastSavedTime = 0;
-
-    
+      
+    let lastSavedTime = 0; 
     const id =
       navigator.geolocation.watchPosition(
 
@@ -142,7 +95,7 @@ const EmployeeAttendance = () => {
           if (
             now -
               lastSavedTime <
-            60000
+            600000           
           ) {
             return;
           }
