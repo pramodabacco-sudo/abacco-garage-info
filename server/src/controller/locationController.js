@@ -20,9 +20,13 @@ export const saveLocation =
             attendanceId,
             latitude,
             longitude,
+
             address:
-              address ||
-              "Unknown Location",
+              typeof address ===
+                "string" &&
+              address.trim() !== ""
+                ? address
+                : "Unknown Location",
           },
         });
 
@@ -31,6 +35,11 @@ export const saveLocation =
       );
 
     } catch (error) {
+
+      console.log(
+        "SAVE LOCATION ERROR:",
+        error
+      );
 
       res.status(500).json({
         message:
