@@ -118,7 +118,43 @@ export const checkOut =
       });
     }
   };
+  
+export const getActiveAttendance =
+  async (req, res) => {
+    try {
+      const { userId } =
+        req.params;
 
+      const attendance =
+        await prisma.employeeAttendance.findFirst({
+          where: {
+            userId,
+            status:
+              "CHECKED_IN",
+          },
+
+          orderBy: {
+            createdAt:
+              "desc",
+          },
+        });
+
+      if (!attendance) {
+        return res.status(404).json({
+          message:
+            "No active attendance found",
+        });
+      }
+
+      res.status(200).json(
+        attendance
+      );
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  };
 
 // GET ALL ATTENDANCE
 export const getAttendance =

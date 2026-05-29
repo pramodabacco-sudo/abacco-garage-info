@@ -4,6 +4,7 @@ import {
   checkIn,
   checkOut,
   getAttendance,
+  getActiveAttendance,
 } from "../controller/attendanceController.js";
 
 const router =
@@ -17,6 +18,11 @@ router.post(
 router.post(
   "/check-out",
   checkOut
+);
+
+router.get(
+  "/active/:userId",
+  getActiveAttendance
 );
 
 router.get(

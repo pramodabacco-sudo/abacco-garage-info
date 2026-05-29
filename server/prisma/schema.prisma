@@ -105,13 +105,24 @@ model EmployeeLocation {
   userId       String
   attendanceId String
 
-  latitude  Float
-  longitude Float
+  // GPS Location
+  latitude  Float?
+  longitude Float?
 
   address String?
+
+  // Manual Location
+  manualLocation String?
+  remarks        String?
+
+  isManual Boolean @default(false)
 
   createdAt DateTime @default(now())
 
   user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   attendance EmployeeAttendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([attendanceId])
+  @@index([createdAt])
 }
