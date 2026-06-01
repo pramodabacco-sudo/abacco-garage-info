@@ -130,7 +130,37 @@ export const getGarageVisits = async (
   }
 };
 
+export const getEmployeeGarageVisits = async (
+  req,
+  res
+) => {
+  try {
+    const { userId } = req.params;
 
+    console.log("userId:", userId);
+
+    const visits =
+      await prisma.garageVisit.findMany({
+        where: {
+          employeeId: userId,
+        },
+
+        include: {
+          images: true,
+          employee: true,
+        },
+      });
+
+    console.log("visits:", visits);
+
+    res.status(200).json(visits);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 // GET SINGLE GARAGE VISIT
 export const getSingleGarageVisit = async (

@@ -7,6 +7,7 @@ import {
   getGarageVisits,
   getSingleGarageVisit,
   updateGarageVisit,
+  getEmployeeGarageVisits,
 } from "../controller/garageController.js";
 
 const router = express.Router();
@@ -23,7 +24,10 @@ router.post(
 // GET ALL
 router.get("/", getGarageVisits);
 
-
+router.get(
+  "/employee/:userId",
+  getEmployeeGarageVisits
+);
 // GET SINGLE
 router.get("/:id", getSingleGarageVisit);
 

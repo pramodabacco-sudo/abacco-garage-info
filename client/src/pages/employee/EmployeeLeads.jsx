@@ -13,9 +13,15 @@ const EmployeeLeads = () => {
   const fetchLeads = async () => {
     try {
 
+    const userData = JSON.parse(
+      localStorage.getItem("user")
+    );
+
+    const userId = userData?.id;
+
       const response =
         await API.get(
-          "/api/garage"
+          `/api/garage/employee/${userId}`
         );
 
       // Only active leads

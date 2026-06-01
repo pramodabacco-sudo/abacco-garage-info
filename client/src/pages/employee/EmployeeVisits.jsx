@@ -47,10 +47,18 @@ const [updatingId, setUpdatingId] =
   const fetchVisits = async () => {
     try {
 
-      const response =
-        await API.get(
-           "/api/garage"
-        );
+    const userData = JSON.parse(
+      localStorage.getItem("user")
+    );
+
+    const userId = userData?.id;
+
+    const response =
+      await API.get(
+        `/api/garage/employee/${userId}`
+      );
+
+    setVisits(response.data);
 
       setVisits(response.data);
 
