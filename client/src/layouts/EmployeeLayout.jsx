@@ -18,7 +18,10 @@ const EMPLOYEE_LINKS = [
     path: "/employee-dashboard/add-garage",
     label: "Add Garage",
   },
-
+{
+    path: "/employee-dashboard/followups",
+    label: "Today's Follow-ups",
+  },
   {
     path: "/employee-dashboard/leads",
     label: "Active Leads",

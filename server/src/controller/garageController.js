@@ -10,6 +10,7 @@ export const createGarageVisit = async (req, res) => {
       address,
       location,
       phoneNumber,
+       garageType,
       leadStatus,
       followUpDate,
       notes,
@@ -20,7 +21,8 @@ export const createGarageVisit = async (req, res) => {
       !shopName ||
       !address ||
       !phoneNumber ||
-      !employeeId
+      !employeeId ||
+      !garageType  
     ) {
       return res.status(400).json({
         message: "Required fields missing",
@@ -34,9 +36,9 @@ export const createGarageVisit = async (req, res) => {
         address,
         location,
         phoneNumber,
-
-    leadStatus:
-      leadStatus || "FIRST_VISIT",
+        garageType,
+        leadStatus:
+           leadStatus || "FIRST_VISIT",
 
     followUpDate:
       followUpDate
@@ -208,6 +210,7 @@ export const updateGarageVisit =
         address,
         location,
         phoneNumber,
+        garageType,
         leadStatus,
         followUpDate,
         notes,
@@ -224,7 +227,7 @@ export const updateGarageVisit =
           address,
           location,
           phoneNumber,
-
+          garageType,
           leadStatus,
 
           followUpDate:
@@ -257,3 +260,40 @@ export const updateGarageVisit =
       });
     }
   };
+
+  // server/controller/garageController.js
+
+export const getEmployeeTodayFollowUps = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Generate local start and end of "Today"
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 5, 59, 999);
+
+    const followUps = await prisma.garageVisit.findMany({
+      where: {
+        employeeId: userId,
+        followUpDate: {
+          gte: startOfToday,
+          lte: endOfToday,
+        },
+      },
+      include: {
+        images: true,
+        employee: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json(followUps);
+  } catch (error) {
+    console.error("Error fetching today's follow-ups:", error);
+    res.status(500).json({ message: error.message });
+  }
+};

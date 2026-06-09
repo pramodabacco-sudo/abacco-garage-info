@@ -6,7 +6,6 @@ const AdminGarageDetailsPopup = ({
   selectedImage,
   setSelectedImage,
 }) => {
-
   if (!selectedGarage) return null;
 
   const getStatusLabel = (status) => {
@@ -22,64 +21,45 @@ const AdminGarageDetailsPopup = ({
 
   return (
     <>
-      {/* Dimmed Modal Mask Overlay */}
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-start sm:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto">
+      {/* Background Mask Overlay */}
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-6 md:p-10">
         
-        {/* Backdrop dismiss anchor area target */}
+        {/* Backdrop Dismiss Anchor target */}
         <div className="absolute inset-0" onClick={() => setSelectedGarage(null)} />
 
-        {/* Primary Content Card Sheet */}
-        <div className="bg-white w-full max-w-4xl h-screen sm:h-auto sm:max-h-[90vh] border-0 sm:border border-[#D9D9D9] shadow-[0_24px_70px_rgba(0,0,0,0.08)] relative z-10 font-sans antialiased flex flex-col overflow-visible">
+        {/* Primary Content Sheet Card */}
+        <div className="bg-white w-full max-w-4xl max-h-[90vh] sm:max-h-[85vh] rounded-xl border border-neutral-200 shadow-2xl relative z-10 flex flex-col overflow-hidden transition-all duration-300">
+          
+          {/* Header Bar Area */}
+          <div className="p-5 sm:p-6 border-b border-neutral-200 pr-14 flex flex-col relative shrink-0">
+            <span className="text-[9px] tracking-[0.3em] uppercase text-neutral-400 font-bold block mb-1">
+              — DISPATCH DOSSIER DATA —
+            </span>
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-neutral-900 break-words line-clamp-2">
+              {selectedGarage.shopName}
+            </h1>
 
-        <button
-        onClick={() => setSelectedGarage(null)}
-        className="
-            absolute
-            top-13 right-3
-            sm:top-4 sm:right-4
-            md:top-5 md:right-5
-            z-[99999]
-            flex items-center justify-center
-            w-10 h-10 sm:w-11 sm:h-11
-            rounded-full
-            bg-black/90
-            text-white
-            shadow-xl
-            hover:bg-black
-            active:scale-95
-            transition-all
-            duration-200
-            text-lg sm:text-xl
-            leading-none
-        "
-        aria-label="Close popup"
-        >
-        ✕
-        </button>
+            {/* Absolute Placed Responsive Close Action */}
+            <button
+              onClick={() => setSelectedGarage(null)}
+              className="absolute top-4 right-4 flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-700 transition-all active:scale-95 text-sm"
+              aria-label="Close popup"
+            >
+              ✕
+            </button>
+          </div>
 
-          {/* FIX: Added 'pt-20 sm:pt-10' spacing profile.
-            'pt-20' provides a protective margin clear of the 16-unit high mobile system top-bar layout header.
-          */}
-          <div className="px-6 pb-24 pt-20 sm:p-10 overflow-y-auto flex-1 space-y-8">
+          {/* Internal Scrollable Core Metrics Body */}
+          <div className="p-5 sm:p-8 overflow-y-auto flex-1 space-y-6 sm:space-y-8 layer-scrolling">
             
-            {/* Header Block with custom text line wrapping constraints */}
-            <div className="pb-5 border-b border-neutral-200 pr-8">
-              <span className="text-[9px] tracking-[0.3em] uppercase text-neutral-400 font-bold block mb-1.5">
-                — DISPATCH DOSSIER DATA —
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-normal tracking-tight text-neutral-900 font-serif break-words leading-snug">
-                {selectedGarage.shopName}
-              </h1>
-            </div>
-
-            {/* Grid Layout Metric Nodes */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-6 pb-6 border-b border-neutral-100">
+            {/* Grid Metrics */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 pb-6 border-b border-neutral-100">
               
               <div className="break-words">
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Primary Location Address
                 </span>
-                <p className="text-sm text-neutral-800 font-medium leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-800 font-medium leading-relaxed">
                   {selectedGarage.address}
                 </p>
               </div>
@@ -88,7 +68,7 @@ const AdminGarageDetailsPopup = ({
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Contact Line Connection
                 </span>
-                <p className="text-sm text-neutral-800 font-mono tracking-wide">
+                <p className="text-xs sm:text-sm text-neutral-800 font-mono tracking-wide">
                   {selectedGarage.phoneNumber}
                 </p>
               </div>
@@ -97,7 +77,7 @@ const AdminGarageDetailsPopup = ({
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Territory Operations Region
                 </span>
-                <p className="text-sm text-neutral-800 font-medium">
+                <p className="text-xs sm:text-sm text-neutral-800 font-medium">
                   {selectedGarage.location || "Unassigned Sector"}
                 </p>
               </div>
@@ -106,16 +86,16 @@ const AdminGarageDetailsPopup = ({
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Field Representative Agent
                 </span>
-                <p className="text-sm text-neutral-900 font-bold">
+                <p className="text-xs sm:text-sm text-neutral-900 font-bold">
                   {selectedGarage.employee?.name || "System Base"}
                 </p>
               </div>
 
-              <div className="overflow-hidden text-ellipsis">
+              <div className="overflow-hidden">
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Agent Authentication Key
                 </span>
-                <p className="text-sm text-neutral-500 font-mono text-xs break-all">
+                <p className="text-xs text-neutral-500 font-mono break-all">
                   {selectedGarage.employee?.email || "N/A"}
                 </p>
               </div>
@@ -124,10 +104,10 @@ const AdminGarageDetailsPopup = ({
                 <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-1">
                   Acquisition Onboarding Phase
                 </span>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <span className={`h-1.5 w-1.5 rounded-full block shrink-0 ${
-                    selectedGarage.leadStatus === "CONVERTED" ? "bg-neutral-900" :
-                    selectedGarage.leadStatus === "REJECTED" ? "bg-neutral-200" : "bg-neutral-400"
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`h-2 w-2 rounded-full block shrink-0 ${
+                    selectedGarage.leadStatus === "CONVERTED" ? "bg-green-600" :
+                    selectedGarage.leadStatus === "REJECTED" ? "bg-red-500" : "bg-blue-500"
                   }`} />
                   <p className="text-xs font-bold uppercase tracking-wider text-neutral-900">
                     {getStatusLabel(selectedGarage.leadStatus)}
@@ -137,17 +117,17 @@ const AdminGarageDetailsPopup = ({
 
             </div>
 
-            {/* Qualitative Notes Logs Block */}
+            {/* Feedback log block */}
             <div>
               <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-2">
                 Qualitative On-Site Feedback Log
               </span>
-              <div className="bg-neutral-50 border border-neutral-200 p-4 text-sm text-neutral-700 leading-relaxed font-sans break-words">
+              <div className="bg-neutral-50 rounded-lg border border-neutral-200 p-3.5 sm:p-4 text-xs sm:text-sm text-neutral-700 leading-relaxed break-words">
                 {selectedGarage.notes || "No system metadata documentation provided for this workstation log run."}
               </div>
             </div>
 
-            {/* Visual Grid Media Matrix Display */}
+            {/* Media Image Grid Matrix */}
             <div>
               <span className="block text-[10px] uppercase tracking-widest text-neutral-400 font-bold mb-3">
                 Visual Evidence Validation Frames ({selectedGarage.images?.length || 0})
@@ -159,18 +139,18 @@ const AdminGarageDetailsPopup = ({
                     <div 
                       key={img.id} 
                       onClick={() => setSelectedImage(img.imageUrl)}
-                      className="relative group aspect-video border border-neutral-200 bg-neutral-50 overflow-hidden cursor-pointer shadow-2xs"
+                      className="relative group aspect-video rounded-md border border-neutral-200 bg-neutral-50 overflow-hidden cursor-pointer shadow-xs"
                     >
                       <img
                         src={img.imageUrl}
                         alt="Intake snapshot"
-                        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-102"
+                        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
                       />
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-xs font-mono text-neutral-400 border border-dashed border-neutral-200 p-6 text-center">
+                <div className="text-xs font-mono text-neutral-400 border border-dashed border-neutral-200 p-6 rounded-lg text-center">
                   No layout imagery captured at site parameter bounds.
                 </div>
               )}
@@ -178,8 +158,8 @@ const AdminGarageDetailsPopup = ({
 
           </div>
 
-          {/* Persistent Footer Log strip data */}
-          <div className="px-10 py-3 bg-neutral-50 border-t border-neutral-100 hidden sm:flex items-center justify-between text-[10px] font-mono text-neutral-400">
+          {/* Footer Bar Information */}
+          <div className="px-6 py-3.5 bg-neutral-50 border-t border-neutral-100 hidden sm:flex items-center justify-between text-[10px] font-mono text-neutral-400 shrink-0">
             <span>Index Entity Identification: {selectedGarage.id || "SYS-GEN"}</span>
             <span>Console Access Log Nominal</span>
           </div>

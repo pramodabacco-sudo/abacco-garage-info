@@ -1,4 +1,4 @@
-//client\src\routes\AppRoutes.jsx
+// client\src\routes\AppRoutes.jsx
 import { Routes, Route } from "react-router-dom";
 
 import Login from "../pages/auth/Login";
@@ -19,6 +19,8 @@ import EmployeeLeads from "../pages/employee/EmployeeLeads";
 import EmployeeVisits from "../pages/employee/EmployeeVisits";
 import AddGarageVisit from "../pages/employee/AddGarageVisit";
 import EmployeeAttendance from "../pages/employee/EmployeeAttendance";
+// ADDED: Import your new Follow Ups component
+import EmployeeFollowUps from "../pages/employee/EmployeeFollowUps"; 
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const AppRoutes = () => {
@@ -43,16 +45,16 @@ const AppRoutes = () => {
           path="add-employee"
           element={<AddEmployee />}
         />
-      <Route
-        path="attendance"
-        element={<AdminAttendance />}
-      />
-      <Route
-      path="garage-visits"
-      element={
-        <AdminGarageVisits />
-      }
-    />
+        <Route
+          path="attendance"
+          element={<AdminAttendance />}
+        />
+        <Route
+          path="garage-visits"
+          element={
+            <AdminGarageVisits />
+          }
+        />
       </Route>
 
       {/* EMPLOYEE */}
@@ -66,6 +68,10 @@ const AppRoutes = () => {
       >
         <Route index element={<EmployeeDashboard />} />
         <Route path="leads" element={<EmployeeLeads />} />
+        
+        {/* ADDED: Route matching your sidebar path configuration */}
+        <Route path="followups" element={<EmployeeFollowUps />} /> 
+        
         <Route path="visits" element={<EmployeeVisits />} />
         <Route
           path="add-garage"

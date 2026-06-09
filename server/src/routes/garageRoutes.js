@@ -8,33 +8,28 @@ import {
   getSingleGarageVisit,
   updateGarageVisit,
   getEmployeeGarageVisits,
+  getEmployeeTodayFollowUps,
 } from "../controller/garageController.js";
 
 const router = express.Router();
-
-
-// CREATE
-router.post(
-  "/create",
-  upload.array("images", 10),
-  createGarageVisit
-);
-
-
 // GET ALL
 router.get("/", getGarageVisits);
+
+// EMPLOYEE ROUTES
+router.get(
+  "/employee/:userId/today-followups",
+  getEmployeeTodayFollowUps
+);
 
 router.get(
   "/employee/:userId",
   getEmployeeGarageVisits
 );
+
 // GET SINGLE
 router.get("/:id", getSingleGarageVisit);
 
 // UPDATE
-router.put(
-  "/:id",
-  updateGarageVisit
-);
+router.put("/:id", updateGarageVisit);
 
 export default router;

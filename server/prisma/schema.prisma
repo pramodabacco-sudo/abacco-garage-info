@@ -35,11 +35,12 @@ model GarageVisit {
 
   phoneNumber String
 
+  garageType String?
+
   leadStatus LeadStatus @default(FIRST_VISIT)
 
   followUpDate DateTime?
-
-  notes String?
+  notes        String?
 
   employeeId String
   employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
