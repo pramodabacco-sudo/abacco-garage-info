@@ -13,6 +13,12 @@ import {
 
 const router = express.Router();
 // GET ALL
+
+router.post(
+  "/create",
+  upload.array("images", 10),
+  createGarageVisit
+);
 router.get("/", getGarageVisits);
 
 // EMPLOYEE ROUTES
