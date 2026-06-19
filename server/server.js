@@ -8,7 +8,7 @@ import garageRoutes from "./src/routes/garageRoutes.js";
 import attendanceRoutes from "./src/routes/attendanceRoutes.js";
 import locationRoutes from "./src/routes/locationRoutes.js";
 import schoolRoutes from "./src/routes/schoolRoutes.js";
-import vehicleRoutes from "./src/routes/vehicleRoutes.js";
+import vehicleroutes from "./src/routes/vehicleroutes.js";
 import { startVehicleTrackingCron } from "./src/services/vehicleTracking.cron.js";
 
 dotenv.config();
@@ -90,7 +90,7 @@ app.use(
   locationRoutes
 );
 app.use("/api/school", schoolRoutes);
-app.use("/api/vehicles", vehicleRoutes);
+app.use("/api/vehicles", vehicleroutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
