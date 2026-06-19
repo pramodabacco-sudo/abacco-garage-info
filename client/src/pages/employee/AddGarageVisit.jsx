@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { LocateFixed, Loader2 } from "lucide-react";
 import API from "../../api/axios";
 
 const AddGarageVisit = () => {
@@ -20,6 +21,7 @@ const AddGarageVisit = () => {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [locatingAddress, setLocatingAddress] = useState(false);
 
   // HANDLE INPUT
   const handleChange = (e) => {
@@ -37,6 +39,53 @@ const AddGarageVisit = () => {
     setImages(files);
     const previews = files.map((file) => URL.createObjectURL(file));
     setPreviewImages(previews);
+  };
+
+  // USE CURRENT LOCATION -> fills Garage Address field
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setErrorMsg("Geolocation is not supported on this device.");
+      return;
+    }
+
+    setLocatingAddress(true);
+    setErrorMsg("");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          let address = "";
+
+          try {
+            const geoResponse = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+              { headers: { Accept: "application/json" } }
+            );
+            const geoData = await geoResponse.json();
+            if (geoData?.display_name) {
+              address = geoData.display_name;
+            }
+          } catch (error) {
+            console.log("Address Fetch Error", error);
+          }
+
+          if (address) {
+            setFormData((prev) => ({ ...prev, address }));
+          } else {
+            setErrorMsg("Could not resolve an address for your current location. Please enter it manually.");
+          }
+        } finally {
+          setLocatingAddress(false);
+        }
+      },
+      (error) => {
+        console.log(error);
+        setLocatingAddress(false);
+        setErrorMsg("Unable to get your current location. Please allow location access or enter the address manually.");
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   };
 
   // SUBMIT
@@ -263,16 +312,31 @@ const AddGarageVisit = () => {
 
             {/* ADDRESS */}
             <div>
-              <label className="block text-[11px] uppercase tracking-widest text-neutral-900 mb-2 font-bold">
-                Garage Address <span className="text-red-500">*</span>
-              </label>
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <label className="block text-[11px] uppercase tracking-widest text-neutral-900 font-bold">
+                  Garage Address <span className="text-red-500">*</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={useCurrentLocation}
+                  disabled={locatingAddress}
+                  className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest font-bold text-neutral-900 border-b border-neutral-900 pb-0.5 hover:text-neutral-600 hover:border-neutral-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+                >
+                  {locatingAddress ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <LocateFixed className="w-3.5 h-3.5" />
+                  )}
+                  {locatingAddress ? "Locating..." : "Use Current Location"}
+                </button>
+              </div>
               <textarea
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
                 rows="2"
                 required
-                placeholder="Enter shop street coordinates..."
+                placeholder="Enter shop street coordinates, or tap 'Use Current Location'..."
                 className="w-full bg-transparent border-b border-neutral-200 py-2 text-sm outline-none transition-colors focus:border-neutral-900 placeholder-neutral-300 resize-none"
               />
             </div>

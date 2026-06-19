@@ -99,7 +99,11 @@ const EmployeeDashboard = () => {
 
       </div>
 
-      {/* Stats */}
+      {/* Garage Stats */}
+      <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold mb-3">
+        Garage Visits
+      </p>
+
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-10">
 
         <div className="bg-white border border-neutral-200 p-5">
@@ -152,8 +156,65 @@ const EmployeeDashboard = () => {
 
       </div>
 
+      {/* School Stats */}
+      <p className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold mb-3">
+        School Visits
+      </p>
+
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-10">
+
+        <div className="bg-white border border-neutral-200 p-5">
+
+          <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">
+            Total Schools
+          </p>
+
+          <h2 className="text-4xl font-light">
+            {data.totalSchools || 0}
+          </h2>
+
+        </div>
+
+        <div className="bg-white border border-neutral-200 p-5">
+
+          <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">
+            Interested
+          </p>
+
+          <h2 className="text-4xl font-light text-green-600">
+            {data.interestedSchools || 0}
+          </h2>
+
+        </div>
+
+        <div className="bg-white border border-neutral-200 p-5">
+
+          <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">
+            Demo Scheduled
+          </p>
+
+          <h2 className="text-4xl font-light text-purple-600">
+            {data.demoScheduledSchools || 0}
+          </h2>
+
+        </div>
+
+        <div className="bg-white border border-neutral-200 p-5">
+
+          <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">
+            Customers
+          </p>
+
+          <h2 className="text-4xl font-light text-blue-600">
+            {data.customerSchools || 0}
+          </h2>
+
+        </div>
+
+      </div>
+
       {/* Recent Visits */}
-      <div className="bg-white border border-neutral-200 overflow-hidden">
+      <div className="bg-white border border-neutral-200 overflow-hidden mb-10">
 
         <div className="p-5 border-b border-neutral-200">
 
@@ -247,6 +308,118 @@ const EmployeeDashboard = () => {
                 </tr>
 
               ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+      {/* Recent Schools */}
+      <div className="bg-white border border-neutral-200 overflow-hidden">
+
+        <div className="p-5 border-b border-neutral-200">
+
+          <h2 className="text-xl font-light">
+            Recent School Visits
+          </h2>
+
+        </div>
+
+        <div className="overflow-x-auto">
+
+          <table className="w-full min-w-[800px]">
+
+            <thead className="bg-neutral-50 border-b border-neutral-200">
+
+              <tr>
+
+                <th className="px-5 py-4 text-left text-xs uppercase">
+                  School
+                </th>
+
+                <th className="px-5 py-4 text-left text-xs uppercase">
+                  City / District
+                </th>
+
+                <th className="px-5 py-4 text-left text-xs uppercase">
+                  Status
+                </th>
+
+                <th className="px-5 py-4 text-left text-xs uppercase">
+                  Images
+                </th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+{data?.recentSchools?.map((school) => (
+
+                <tr
+                  key={school.id}
+                  className="border-b border-neutral-100"
+                >
+
+                  <td className="px-5 py-4">
+
+                    <div className="font-medium">
+                      {school.schoolName}
+                    </div>
+
+                  </td>
+
+                  <td className="px-5 py-4 text-sm text-neutral-600">
+
+                    {[school.city, school.district].filter(Boolean).join(", ") || "—"}
+
+                  </td>
+
+                  <td className="px-5 py-4">
+
+                    <span className="text-xs px-3 py-1 bg-neutral-100 rounded-full">
+                      {school.responseStatus}
+                    </span>
+
+                  </td>
+
+                  <td className="px-5 py-4">
+
+                    <div className="flex gap-2">
+
+                      {school.images
+                        ?.slice(0, 3)
+                        .map((img) => (
+
+                        <img
+                          key={img.id}
+                          src={
+                            img.imageUrl
+                          }
+                          alt=""
+                          className="w-14 h-14 rounded object-cover"
+                        />
+
+                      ))}
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+              {(!data?.recentSchools || data.recentSchools.length === 0) && (
+                <tr>
+                  <td colSpan={4} className="px-5 py-8 text-center text-sm text-neutral-400">
+                    No school visits logged yet
+                  </td>
+                </tr>
+              )}
 
             </tbody>
 

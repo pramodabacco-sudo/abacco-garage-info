@@ -7,6 +7,9 @@ import employeeDashboardRoutes from "./src/routes/employeeDashboardRoutes.js";
 import garageRoutes from "./src/routes/garageRoutes.js";
 import attendanceRoutes from "./src/routes/attendanceRoutes.js";
 import locationRoutes from "./src/routes/locationRoutes.js";
+import schoolRoutes from "./src/routes/schoolRoutes.js";
+import vehicleRoutes from "./src/routes/vehicleRoutes.js";
+import { startVehicleTrackingCron } from "./src/services/vehicleTracking.cron.js";
 
 dotenv.config();
 
@@ -86,7 +89,12 @@ app.use(
   "/api/location",
   locationRoutes
 );
+app.use("/api/school", schoolRoutes);
+app.use("/api/vehicles", vehicleRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // Start GPS polling once the server is up
+  startVehicleTrackingCron();
 });

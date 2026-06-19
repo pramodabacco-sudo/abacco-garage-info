@@ -20,6 +20,8 @@ model User {
   garageVisits GarageVisit[]
   attendance   EmployeeAttendance[]
   locations    EmployeeLocation[]
+  schools      School[]
+  vehicles     Vehicle[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -77,6 +79,65 @@ enum LeadStatus {
   NOT_INTERESTED
 }
 
+model School {
+  id String @id @default(cuid())
+
+  schoolName    String
+  contactPerson String?
+  designation   String?
+
+  phoneNumber String?
+  email       String?
+
+  address  String?
+  city     String?
+  district String?
+  state    String?
+
+  // GPS Location
+  latitude  Float?
+  longitude Float?
+
+  responseStatus SchoolResponseStatus @default(NOT_CONTACTED)
+
+  followUpDate DateTime?
+  notes        String?
+
+  employeeId String
+  employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  images SchoolImage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId])
+  @@index([responseStatus])
+  @@index([followUpDate])
+}
+
+model SchoolImage {
+  id String @id @default(cuid())
+
+  imageUrl String
+  publicId String?
+
+  schoolId String
+  school   School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+enum SchoolResponseStatus {
+  NOT_CONTACTED
+  VISITED
+  INTERESTED
+  DEMO_SCHEDULED
+  FOLLOW_UP
+  NOT_INTERESTED
+  CUSTOMER
+}
+
 model EmployeeAttendance {
   id String @id @default(cuid())
 
@@ -126,4 +187,73 @@ model EmployeeLocation {
   @@index([userId])
   @@index([attendanceId])
   @@index([createdAt])
+}
+
+model Vehicle {
+  id String @id @default(cuid())
+
+  name  String // e.g. "Delivery Scooty 1"
+  regNo String @unique // e.g. "KA50EL0766" — matched against GPS API response
+
+  isActive Boolean @default(true)
+
+  // Link to the employee this vehicle is assigned to
+  employeeId String
+  employee   User   @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  // Convenience snapshot of the LATEST known location (avoids extra query on list view)
+  latestLatitude  Float?
+  latestLongitude Float?
+  latestSpeed     Float?
+  latestAddress   String?
+  latestStatus    VehicleStatus?
+  latestIgnition  String?
+  lastSeenAt      DateTime?
+
+  locations VehicleLocation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([employeeId])
+}
+
+model VehicleLocation {
+  id String @id @default(cuid())
+
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  regNo String // denormalized for quick lookup/debug
+
+  latitude  Float?
+  longitude Float?
+  speed     Float?
+  bearing   Float?
+
+  status         String?
+  ignitionStatus String?
+  vehicleStatus  VehicleStatus?
+
+  address     String?
+  odoDistance Float?
+  fuelLitre   Float?
+
+  gpsTimestamp DateTime? // isoDate from GPS API (when the reading was taken)
+
+  rawData Json? // full API object for that vehicle, for debugging
+
+  createdAt DateTime @default(now())
+
+  @@index([vehicleId])
+  @@index([regNo])
+  @@index([createdAt])
+}
+
+enum VehicleStatus {
+  MOVING
+  PARKED
+  IDLE
+  OFF
+  NODATA
 }

@@ -56,6 +56,47 @@ export const getDashboardStats =
           },
         });
 
+      const totalSchools =
+        await prisma.school.count();
+
+      const schoolsVisited =
+        await prisma.school.count({
+          where: {
+            responseStatus: "VISITED",
+          },
+        });
+
+      const interestedSchools =
+        await prisma.school.count({
+          where: {
+            responseStatus: "INTERESTED",
+          },
+        });
+
+      const demoScheduledSchools =
+        await prisma.school.count({
+          where: {
+            responseStatus: "DEMO_SCHEDULED",
+          },
+        });
+
+      const customerSchools =
+        await prisma.school.count({
+          where: {
+            responseStatus: "CUSTOMER",
+          },
+        });
+
+      const schoolFollowUpsPending =
+        await prisma.school.count({
+          where: {
+            responseStatus: "FOLLOW_UP",
+            followUpDate: {
+              not: null,
+            },
+          },
+        });
+
       const recentGarages =
         await prisma.garageVisit.findMany({
           take: 5,
@@ -63,6 +104,20 @@ export const getDashboardStats =
           orderBy: {
             createdAt:
               "desc",
+          },
+
+          include: {
+            employee: true,
+            images: true,
+          },
+        });
+
+      const recentSchools =
+        await prisma.school.findMany({
+          take: 5,
+
+          orderBy: {
+            createdAt: "desc",
           },
 
           include: {
@@ -80,6 +135,13 @@ export const getDashboardStats =
         convertedLeads,
         checkedInEmployees,
         recentGarages,
+        totalSchools,
+        schoolsVisited,
+        interestedSchools,
+        demoScheduledSchools,
+        customerSchools,
+        schoolFollowUpsPending,
+        recentSchools,
       });
 
 } catch (error) {

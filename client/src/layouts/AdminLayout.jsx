@@ -17,6 +17,14 @@ const ADMIN_LINKS = [
   path: "/admin-dashboard/garage-visits",
   label: "Garage Visits",
 },
+  {
+    path: "/admin-dashboard/schools",
+    label: "School Visits",
+  },
+  {
+    path: "/admin-dashboard/vehicles",
+    label: "Vehicle Tracking",
+  },
 ];
 
 const AdminLayout = () => {

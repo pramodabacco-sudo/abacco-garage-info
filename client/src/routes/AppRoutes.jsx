@@ -13,6 +13,10 @@ import AdminSettings from "../pages/admin/AdminSettings";
 import AddEmployee from "../pages/admin/AddEmployee";
 import AdminAttendance from "../pages/admin/AdminAttendance";
 import AdminGarageVisits from "../pages/admin/AdminGarageVisits";
+// ADDED: School module (admin)
+import AdminSchools from "../pages/admin/AdminSchools";
+// ADDED: Vehicle tracking (admin)
+import AdminVehicles from "../pages/admin/AdminVehicles";
 
 import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
 import EmployeeLeads from "../pages/employee/EmployeeLeads";
@@ -21,6 +25,11 @@ import AddGarageVisit from "../pages/employee/AddGarageVisit";
 import EmployeeAttendance from "../pages/employee/EmployeeAttendance";
 // ADDED: Import your new Follow Ups component
 import EmployeeFollowUps from "../pages/employee/EmployeeFollowUps"; 
+// ADDED: School module (employee)
+import AddSchool from "../pages/employee/AddSchool";
+import EmployeeSchools from "../pages/employee/EmployeeSchools";
+// ADDED: School Details (shared by both roles)
+import SchoolDetails from "../pages/shared/SchoolDetails";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const AppRoutes = () => {
@@ -55,6 +64,11 @@ const AppRoutes = () => {
             <AdminGarageVisits />
           }
         />
+        {/* ADDED: School routes (admin) */}
+        <Route path="schools" element={<AdminSchools />} />
+        <Route path="schools/:id" element={<SchoolDetails />} />
+        {/* ADDED: Vehicle tracking (admin) */}
+        <Route path="vehicles" element={<AdminVehicles />} />
       </Route>
 
       {/* EMPLOYEE */}
@@ -83,6 +97,10 @@ const AppRoutes = () => {
             <EmployeeAttendance />
           }
         />
+        {/* ADDED: School routes (employee) */}
+        <Route path="add-school" element={<AddSchool />} />
+        <Route path="schools" element={<EmployeeSchools />} />
+        <Route path="schools/:id" element={<SchoolDetails />} />
       </Route>
     </Routes>
   );
