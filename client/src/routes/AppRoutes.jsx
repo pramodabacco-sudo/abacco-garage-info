@@ -83,6 +83,7 @@ const AppRoutes = () => {
         <Route index element={<EmployeeDashboard />} />
         <Route path="leads" element={<EmployeeLeads />} />
         
+        
         {/* ADDED: Route matching your sidebar path configuration */}
         <Route path="followups" element={<EmployeeFollowUps />} /> 
         
