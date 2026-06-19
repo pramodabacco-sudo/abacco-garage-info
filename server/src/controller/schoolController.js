@@ -22,6 +22,7 @@ export const createSchool = async (req, res) => {
       employeeId,
     } = req.body;
 
+    
     if (!schoolName || !employeeId) {
       return res.status(400).json({
         message: "School name is required",
